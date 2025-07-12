@@ -14,37 +14,49 @@ class App extends React.Component<object, IState> {
     filteredData: [],
     loading: true,
     error: null,
-    search: 'a',
+    search: localStorage.getItem('pokeSearch') || '',
   };
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(this.state.search);
   }
   // просто фильтрует массив
-  filterData = (term: string) => {
-    const lowerCase = term.toLowerCase().trim();
-    const filtered = this.state.data.filter((char) =>
-      char.name.toLowerCase().includes(lowerCase)
-    );
-    this.setState({ filteredData: filtered });
-  };
-  fetchData = async () => {
-    const url = 'https://pokeapi.co/api/v2/pokemon'; //?limit=1000
+  // filterData = (term: string) => {
+  //   const lowerCase = term.toLowerCase().trim();
+  //   const filtered = this.state.data.filter((char) =>
+  //     char.name.toLowerCase().includes(lowerCase)
+  //   );
+  //   this.setState({ filteredData: filtered });
+  // };
+  fetchData = async (search: string) => {
+    const url = search
+      ? `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`
+      : 'https://pokeapi.co/api/v2/pokemon';
+
     this.setState({ loading: true, error: null });
     try {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
+      const response = await fetch(url);
+      // , {
+      //   method: 'GET',
+      //   headers: {
+      //     'Content-Type': 'application/x-www-form-urlencoded',
+      //   },
+      // });
       if (!response.ok) {
+        // PokeAPI возвращает 404 если покемон не найден, это штатная ситуация
+        if (response.status === 404) {
+          this.setState({ data: [], loading: false });
+          return;
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+      // 3. Адаптация ответа API
+      // Если искали конкретного покемона, API вернет объект. Оборачиваем его в массив.
+      // Если запрашивали список, API вернет { results: [...] }.
       this.setState(
-        { data: data.results, loading: false },
+        { filteredData: data.results ? data.results : [data], loading: false } //,
         // После загрузки сразу отфильтруем список
-        () => this.filterData(this.state.search)
+        // () => this.filterData(this.state.search)
         // () => {}
       );
     } catch (e) {
@@ -55,8 +67,9 @@ class App extends React.Component<object, IState> {
   handleSearch = (term: string) => {
     const trimmed = term.trim();
     this.setState({ search: trimmed });
-    localStorage.setItem('pokeSearchTerm', trimmed);
-    this.filterData(trimmed);
+    localStorage.setItem('pokeSearch', trimmed);
+    // this.filterData(trimmed);
+    this.fetchData(trimmed);
   };
   render() {
     const { search, loading, error, filteredData } = this.state;

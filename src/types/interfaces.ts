@@ -20,3 +20,6 @@ export interface ISearchProps {
   initial: string;
   onSearch: (term: string) => void;
 }
+export interface ISearchState {
+  value: string;
+}
