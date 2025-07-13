@@ -1,7 +1,6 @@
-// types/interfaces.ts - define types for the data from the API.
+// File: src/types/interfaces.ts
 export interface IState {
   data: Idata[];
-  filteredData: Idata[];
   loading: boolean;
   error: Error | null;
   search: string;

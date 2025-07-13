@@ -1,3 +1,4 @@
+// File: src/components/Main/Main.tsx
 import React from 'react';
 import Spinner from '../Spinner/Spinner';
 import type { IProps } from '../../types/interfaces';
