@@ -1,5 +1,7 @@
+// File: src/components/ThrowError/ThrowError.tsx
 import React from 'react';
 import type { IThrowErrorState } from '../../types/interfaces';
+import styles from './ThrowError.module.css';
 
 class ThrowError extends React.Component<object, IThrowErrorState> {
   state = {
@@ -17,10 +19,10 @@ class ThrowError extends React.Component<object, IThrowErrorState> {
       throw new Error('This is a test error!');
     }
     return (
-      <div>
+      <div className={styles.error}>
         <button
           onClick={this.triggerRenderError}
-          style={{ position: 'relative', marginTop: '20px', left: '50px' }}
+          // style={{ position: 'relative', marginTop: '20px', left: '50px' }}
         >
           Throw Error
         </button>

@@ -8,7 +8,7 @@ class Header extends React.Component<ISearchProps, object> {
     // const { initial, onSearch } = this.props;
     return (
       <header>
-        <h1>Search</h1>
+        <h1>Top controls</h1>
         <Search {...this.props} />
       </header>
     );

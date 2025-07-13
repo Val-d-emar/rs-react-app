@@ -1,6 +1,7 @@
 // File: src/components/Search/Search.tsx
 import React from 'react';
 import type { ISearchProps, ISearchState } from '../../types/interfaces';
+import styles from './Search.module.css';
 
 class Search extends React.Component<ISearchProps, ISearchState> {
   state = {
@@ -11,7 +12,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     // We get all the data from props, not from state.
     const { onSearch } = this.props;
     return (
-      <div>
+      <div className={styles.search}>
         <input
           type='search'
           value={this.state.value}
