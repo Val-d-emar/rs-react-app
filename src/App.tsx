@@ -3,12 +3,12 @@ import './App.css';
 import React from 'react';
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
-import type { IState } from './types/interfaces';
+import type { IItem, IState } from './types/interfaces';
+import { log } from './log';
 
-class App extends React.Component<object, IState> {
+export class App extends React.Component<object, IState> {
   state: IState = {
     data: [],
-    // filteredData: [],
     loading: true,
     error: null,
     search: localStorage.getItem('pokeSearch') || '',
@@ -36,9 +36,28 @@ class App extends React.Component<object, IState> {
       const data = await response.json();
       // If you searched for a specific Pokémon, the API will return an object. We wrap it in an array.
       // // If you requested a list, the API will return { results: [...] }.
+      const pokeData: IItem[] = [];
+      if (data.results && Array.isArray(data.results)) {
+        data.results.map((item: IItem) => {
+          pokeData.push({
+            name: item.name,
+            url:
+              item.url.split('/').filter(Boolean).pop() ||
+              'N/A ' + Math.random(),
+          });
+        });
+      } else if (data && data.name && data.id) {
+        pokeData.push({
+          name: data.name,
+          url: String(data.id),
+        });
+      } else {
+        throw new Error('Unexpected data format');
+      }
       this.setState(
-        { data: data.results ? data.results : [data], loading: false } //,
+        { data: pokeData, loading: false } //,
       );
+      log('Fetched data:', data);
     } catch (e) {
       this.setState({ error: e as Error, loading: false });
     }
@@ -60,5 +79,4 @@ class App extends React.Component<object, IState> {
     );
   }
 }
-
 export default App;

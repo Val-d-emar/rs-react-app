@@ -1,11 +1,14 @@
 // File: src/types/interfaces.ts
 export interface IState {
-  data: Idata[];
+  data: IItem[];
   loading: boolean;
   error: Error | null;
   search: string;
 }
-interface Idata {
+export interface IData {
+  items: IItem[];
+}
+export interface IItem {
   name: string;
   url: string;
 }
@@ -13,7 +16,7 @@ interface Idata {
 export interface IProps {
   loading: boolean;
   error: Error | null;
-  filteredData: Idata[];
+  filteredData: IItem[];
 }
 export interface ISearchProps {
   initial: string;

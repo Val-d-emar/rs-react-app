@@ -2,6 +2,7 @@
 import React from 'react';
 import Spinner from '../Spinner/Spinner';
 import type { IProps } from '../../types/interfaces';
+import CardList from '../CardList/CardList';
 
 class Main extends React.Component<IProps, object> {
   render() {
@@ -23,13 +24,16 @@ class Main extends React.Component<IProps, object> {
     return (
       <main>
         {/* There will be a list of cards or a spinner/error here. */}
-        <p>
-          <ul>
-            {filteredData.map((char) => (
-              <li key={char.name}>{char.name}</li>
-            ))}
-          </ul>
-        </p>
+        {/* We render a table with the list of cards. */}
+        <table border={1} cellPadding={5} cellSpacing={0} width={'100%'}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <CardList items={filteredData} />
+        </table>
       </main>
     );
   }
