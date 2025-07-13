@@ -21,9 +21,7 @@ export class App extends React.Component<object, IState> {
 
   // This method fetches data from the PokeAPI.
   fetchData = async (search: string) => {
-    const url = search
-      ? `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`
-      : 'https://pokeapi.co/api/v2/pokemon';
+    const url = `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`;
 
     this.setState({ loading: true, error: null });
     try {
