@@ -3,6 +3,7 @@ import './App.css';
 import React from 'react';
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import type { IItem, IState } from './types/interfaces';
 import { log } from './log';
 
@@ -73,8 +74,10 @@ export class App extends React.Component<object, IState> {
     const { search, loading, error, data } = this.state;
     return (
       <div className='app'>
-        <Header initial={search} onSearch={this.handleSearch} />
-        <Main loading={loading} error={error} filteredData={data} />
+        <ErrorBoundary>
+          <Header initial={search} onSearch={this.handleSearch} />
+          <Main loading={loading} error={error} filteredData={data} />
+        </ErrorBoundary>
       </div>
     );
   }
