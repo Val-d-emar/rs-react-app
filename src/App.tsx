@@ -6,6 +6,7 @@ import Main from './components/Main/Main';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import type { IItem, IState } from './types/interfaces';
 import { log } from './log';
+import ThrowError from './components/ThrowError/ThrowError';
 
 export class App extends React.Component<object, IState> {
   state: IState = {
@@ -77,6 +78,7 @@ export class App extends React.Component<object, IState> {
         <ErrorBoundary>
           <Header initial={search} onSearch={this.handleSearch} />
           <Main loading={loading} error={error} filteredData={data} />
+          <ThrowError />
         </ErrorBoundary>
       </div>
     );

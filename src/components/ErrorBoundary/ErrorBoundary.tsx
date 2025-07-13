@@ -1,5 +1,5 @@
 // File: src/components/ErrorBoundary/ErrorBoundary.tsx
-//We use `import type` for entities that are only types.
+// We use `import type` for entities that are only types.
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 // Typing: the component accepts child elements

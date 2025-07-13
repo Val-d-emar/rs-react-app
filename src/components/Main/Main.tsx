@@ -1,26 +1,11 @@
 // File: src/components/Main/Main.tsx
 import React from 'react';
 import Spinner from '../Spinner/Spinner';
-import type { IMainState, IProps } from '../../types/interfaces';
+import type { IProps } from '../../types/interfaces';
 import CardList from '../CardList/CardList';
 
-class Main extends React.Component<IProps, IMainState> {
-  state = {
-    throwError: false,
-  };
-  // This button simply changes the state.
-  triggerRenderError = () => {
-    this.setState({ throwError: true });
-  };
+class Main extends React.Component<IProps, object> {
   render() {
-    // In the next render, this condition will become true.
-    if (this.state.throwError) {
-      // The error occurs DIRECTLY INSIDE RENDER,
-      // that's why ErrorBoundary will catch it!
-      throw new Error('This is a test error!');
-    }
-
-    // We get all the data from props, not from state.
     const { loading, error, filteredData } = this.props;
 
     if (loading) {
@@ -48,12 +33,6 @@ class Main extends React.Component<IProps, IMainState> {
           </thead>
           <CardList items={filteredData} />
         </table>
-        <button
-          onClick={this.triggerRenderError}
-          style={{ position: 'relative', marginTop: '20px', left: '50px' }}
-        >
-          Throw Error
-        </button>
       </main>
     );
   }
