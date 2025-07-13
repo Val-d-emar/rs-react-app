@@ -13,14 +13,6 @@ class Main extends React.Component<IProps, object> {
       return <Spinner />;
     }
 
-    // if (error) {
-    //   return <p>Error: {error.message}</p>;
-    // }
-
-    // if (!loading && filteredData.length === 0) {
-    //   return <p>Not found.</p>;
-    // }
-
     return (
       <main>
         <h2>Results</h2>

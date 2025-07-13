@@ -1,23 +1,23 @@
 /* File src/components/Main/Main.module.css */
 
 .resultsTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    font-size: 1rem;
-    border: #ea9fb4 1px solid; 
-    padding:5px;
-    spacing:0;
-  }
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 1rem;
+  border: #ea9fb4 1px solid;
+  padding: 5px;
+  spacing: 0;
+}
 
-  .resultsTable th {
-    font-weight: 600;
-    text-align: left;
-    padding: 0.75rem;
-    border: 2px solid #dee2e6;
-  }
-  
-  .resultsTable td {
-    padding: 0.75rem;
-    border: 1px solid #dee2e6;
-  }
+.resultsTable th {
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem;
+  border: 2px solid #dee2e6;
+}
+
+.resultsTable td {
+  padding: 0.75rem;
+  border: 1px solid #dee2e6;
+}

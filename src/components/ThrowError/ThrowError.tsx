@@ -20,12 +20,7 @@ class ThrowError extends React.Component<object, IThrowErrorState> {
     }
     return (
       <div className={styles.error}>
-        <button
-          onClick={this.triggerRenderError}
-          // style={{ position: 'relative', marginTop: '20px', left: '50px' }}
-        >
-          Throw Error
-        </button>
+        <button onClick={this.triggerRenderError}>Throw Error</button>
       </div>
     );
   }
