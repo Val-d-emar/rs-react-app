@@ -34,6 +34,14 @@ class Main extends React.Component<IProps, object> {
           </thead>
           <CardList items={filteredData} />
         </table>
+        <button
+          onClick={() => {
+            throw new Error('This is a test error!');
+          }}
+          style={{ position: 'relative', marginTop: '20px', left: '50px' }}
+        >
+          Throw Error
+        </button>
       </main>
     );
   }
