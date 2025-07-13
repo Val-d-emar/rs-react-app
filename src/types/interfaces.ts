@@ -25,3 +25,6 @@ export interface ISearchProps {
 export interface ISearchState {
   value: string;
 }
+export interface IMainState {
+  throwError: boolean;
+}
