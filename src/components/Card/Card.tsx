@@ -1,4 +1,5 @@
 // File: src/components/Card/Card.tsx
+import { log } from '../../log';
 import type { IItem } from '../../types/interfaces';
 
 const Card = ({ name, url }: IItem) => {
@@ -6,7 +7,7 @@ const Card = ({ name, url }: IItem) => {
   const id = url; //.split('/').filter(Boolean).pop() || 'N/A';
   // We capitalize the first letter of the name for better display.
   const capitalizedName = name ? name[0].toUpperCase() + name.slice(1) : 'N/A';
-  console.log('Card: ', { id, capitalizedName });
+  log('Card: ', { id, capitalizedName });
   return (
     <tr>
       <td>{id}</td>

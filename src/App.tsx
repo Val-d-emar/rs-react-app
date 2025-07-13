@@ -18,6 +18,7 @@ export class App extends React.Component<object, IState> {
   componentDidMount() {
     this.fetchData(this.state.search);
   }
+
   // This method fetches data from the PokeAPI.
   fetchData = async (search: string) => {
     const url = search
@@ -26,16 +27,20 @@ export class App extends React.Component<object, IState> {
 
     this.setState({ loading: true, error: null });
     try {
-      const response = await fetch(url);
+      let response = await fetch(url);
       if (!response.ok) {
         // PokeAPI returns a 404 if the Pokémon is not found, this is a normal situation.
         if (response.status === 404) {
-          this.setState({ data: [], loading: false });
-          return;
+          response = await fetch('https://pokeapi.co/api/v2/pokemon'); //get all
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+
       // If you searched for a specific Pokémon, the API will return an object. We wrap it in an array.
       // // If you requested a list, the API will return { results: [...] }.
       const pokeData: IItem[] = [];
@@ -56,9 +61,12 @@ export class App extends React.Component<object, IState> {
       } else {
         throw new Error('Unexpected data format');
       }
-      this.setState(
-        { data: pokeData, loading: false } //,
-      );
+      this.setState({
+        data: pokeData.filter((char) =>
+          char.name.toLowerCase().includes(search.toLowerCase().trim())
+        ),
+        loading: false,
+      });
       log('Fetched data:', data);
     } catch (e) {
       this.setState({ error: e as Error, loading: false });
