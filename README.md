@@ -52,6 +52,12 @@ To set up this project locally, follow these steps:
 
    The application will then be available at `http://localhost:5173` (or another port specified in the console).
 
+5. **Dockerize:**
+   ```
+   docker build -t the_name_of_your_image .
+   docker run -p 8080:80 the_name_of_your_image
+   ```
+   The application will then be available at `http://localhost:8080` (or another port specified in the command first).
 ---
 
 ## ✅ Verification Checklist (100 Points)
