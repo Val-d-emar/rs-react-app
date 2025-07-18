@@ -31,16 +31,19 @@ To set up this project locally, follow these steps:
    ```bash
    git clone git@github.com:Val-d-emar/rs-react-app.git -b class-components
    ```
+
 2. **Navigate to the project directory:**
 
    ```bash
    cd rs-react-app
    ```
+
 3. **Install dependencies:**
 
    ```bash
    npm install
    ```
+
 4. **Run the project in development mode:**
 
    ```bash
@@ -48,6 +51,7 @@ To set up this project locally, follow these steps:
    ```
 
    The application will then be available at `http://localhost:5173` (or another port specified in the console).
+
 5. **Dockerize:**
 
    ```
@@ -57,7 +61,7 @@ To set up this project locally, follow these steps:
 
    The application will then be available at `http://localhost:8080` (or another port specified in the command first).
 
-   ***Upload to dockerhub***
+   **_Upload to dockerhub_**
 
    ```
    docker login
@@ -116,11 +120,13 @@ This section will help you verify that all assignment requirements have been met
      ```bash
      npm run build
      ```
+
   3. Run a local server to preview the build (if `serve` is not installed, run `npm install -g serve`):
 
      ```bash
      serve -s dist
      ```
+
   4. Open the application in your browser at the address provided by `serve` (e.g., `http://localhost:3000`).
   5. Click the **"Test Error Boundary"** button.
   6. **Expected Result:** The application **should not crash** with a white or red screen. Instead, the broken part of the UI should be replaced with the fallback UI (e.g., an `<h1>Something went wrong. Please reload the page.</h1>` heading), and a log from `ErrorBoundary caught an error: ...` should appear in the console.
