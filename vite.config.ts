@@ -7,23 +7,23 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/setupTests.ts', // Файл для начальной настройки тестов
+    setupFiles: './src/setupTests.ts', // File for initial test setup
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      // Требования к покрытию из задания
+      // Requirements for the coating from the assignment
       thresholds: {
         statements: 80,
         branches: 50,
         functions: 50,
         lines: 50,
       },
-      // Что включать и исключать из отчета
+      // What to include and exclude from the report
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: [
         'src/**/*.test.{js,jsx,ts,tsx}',
         'src/**/*.spec.{js,jsx,ts,tsx}',
-        'src/main.tsx', // Обычно не тестируем точку входа
+        'src/main.tsx', // Usually do not test the entry point
         'src/vite-env.d.ts',
         'src/setupTests.ts',
       ],
