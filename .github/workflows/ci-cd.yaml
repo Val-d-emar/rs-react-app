@@ -1,0 +1,75 @@
+# .github/workflows/ci-cd.yml
+name: CI/CD Pipeline
+
+# Триггеры: запускать воркфлоу при push или pull_request в ветку 'main', 'dev'
+on:
+  push:
+    branches: ['main', 'dev']
+  pull_request:
+    branches: ['main', 'dev']
+
+jobs:
+  build-and-test:
+    # Запускать на последней версии Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Клонирование вашего репозитория
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Шаг 2: Настройка Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      # Шаг 3: Установка зависимостей
+      - name: Install dependencies
+        run: npm i
+      # ... после шага "Install dependencies"
+
+      # Шаг 4: Проверка линтером и форматом
+      - name: Run linter and check format
+        run: |
+          npm run lint
+          npm run format:check
+
+      # Шаг 5: Запуск тестов
+      - name: Run tests
+        run: npm run test -- --run # Флаг --run для Vitest, чтобы он завершился после тестов
+
+      # Шаг 6: Сборка Docker-образа для теста
+      - name: Build Docker image for testing
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true # Загружает образ в локальный Docker, чтобы его можно было запустить
+          tags: test-image:latest
+
+      # Шаг 7: Тестирование запущенного контейнера
+      - name: Test running container
+        run: |
+          docker run -d --name test-container -p 8080:80 test-image:latest
+          echo "Waiting for container to start..."
+          sleep 10
+          echo "Pinging the container..."
+          curl --fail http://localhost:8080
+
+      # Шаг 8: Вход в Docker Hub
+      - name: Log in to Docker Hub
+        if: github.ref == 'refs/heads/dev' && github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Шаг 9: Сборка и публикация образа
+      - name: Build and push to Docker Hub
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/rs-react-apps:latest # Публикуем образ в Docker Hub
