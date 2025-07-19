@@ -10,7 +10,7 @@ export default defineConfig({
     setupFiles: './src/setupTests.ts', // File for initial test setup
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'html', 'text-summary'],
       // Requirements for the coating from the assignment
       thresholds: {
         statements: 80,
