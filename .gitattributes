@@ -10,6 +10,9 @@
 *.cmd text eol=cr
 *.bat text eol=cr
 *.tf text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
 # The above will handle all files NOT found below
 #
 # These files are text and should be normalized (Convert crlf => lf)

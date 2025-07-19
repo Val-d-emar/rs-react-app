@@ -1,0 +1,10 @@
+/* File: src/components/Card/Card.module.css */
+
+.tableRow {
+  transition: background-color 0.2s;
+  border: #ea9fb4 1px solid;
+}
+
+.tableRow:hover {
+  background-color: #840c2e;
+}
