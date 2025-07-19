@@ -6,9 +6,9 @@ import type { IItem } from '../../types/interfaces';
 
 describe('CardList Component', () => {
   const mockPokemonList: IItem[] = [
-    { name: 'Bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
-    { name: 'Charmander', url: 'https://pokeapi.co/api/v2/pokemon/4/' },
-    { name: 'Squirtle', url: 'https://pokeapi.co/api/v2/pokemon/7/' },
+    { name: 'Bulbasaur', url: '1' },
+    { name: 'Charmander', url: '4' },
+    { name: 'Squirtle', url: '7' },
   ];
 
   it('should render a table row for each pokemon', () => {

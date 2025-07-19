@@ -234,6 +234,10 @@ describe('App Component - Integration Tests', () => {
       screen.getByRole('button', { name: /Throw Error/i })
     ).toBeInTheDocument();
 
+    // let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
     const errorButton = screen.getByRole('button', { name: /Throw Error/i });
     await user.click(errorButton);
     // Checking that the error is thrown and the button is no longer present
@@ -244,5 +248,6 @@ describe('App Component - Integration Tests', () => {
     expect(
       screen.getByText(/Something went wrong. Please reload the page/i)
     ).toBeInTheDocument();
+    consoleErrorSpy.mockRestore();
   });
 });

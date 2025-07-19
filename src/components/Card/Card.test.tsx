@@ -10,11 +10,17 @@ describe('Card Component', () => {
     // 1. Arrange (Preparation): We are creating mock (artificial) data
     const mockPokemon: IItem = {
       name: 'Pikachu',
-      url: 'https://pokeapi.co/api/v2/pokemon/25/',
+      url: '25',
     };
 
     // 2. Act (Action): Rendering the component with mock data
-    render(<Card {...mockPokemon} />);
+    render(
+      <table>
+        <tbody>
+          <Card {...mockPokemon} />
+        </tbody>
+      </table>
+    );
 
     // 3. Assert (Check): We check that what we expected has appeared on the screen.
     // We use screen.getByText to search for elements by their text

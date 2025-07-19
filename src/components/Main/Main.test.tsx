@@ -20,9 +20,7 @@ vi.mock('../CardList/CardList', () => ({
 }));
 
 describe('Main Component', () => {
-  const mockPokemonList: IItem[] = [
-    { name: 'Pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
-  ];
+  const mockPokemonList: IItem[] = [{ name: 'Pikachu', url: '25' }];
 
   it('should render the Spinner when loading is true', () => {
     // Arrange & Act: Rendering the component in the loading state
