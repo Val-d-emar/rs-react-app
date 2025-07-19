@@ -55,7 +55,7 @@ jobs:
           script: |
             const fs = require('fs');
             const summary = fs.readFileSync('coverage-summary.txt', 'utf8');
-            
+
             const body = `## 🧪 Test Coverage Report\n\n\`\`\`\n${summary}\n\`\`\``;
 
             await github.rest.issues.createComment({
