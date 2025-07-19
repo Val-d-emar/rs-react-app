@@ -8,6 +8,10 @@ on:
   pull_request:
     branches: ['main', 'dev']
 
+permissions:
+  contents: read # Право на чтение содержимого репозитория (для checkout)
+  pull-requests: write # Право на запись в Pull Requests (для комментирования)
+
 jobs:
   build-and-test:
     # Запускать на последней версии Ubuntu
