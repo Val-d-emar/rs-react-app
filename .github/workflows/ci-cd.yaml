@@ -47,6 +47,9 @@ jobs:
       # Шаг 5.1: Генерация отчета о покрытии
       - name: Run tests and generate coverage summary
         id: coverage
+        env:
+          NO_COLOR: true # Отключаем цветной вывод для лучшей читаемости в комментариях
+        # Запуск тестов с покрытием и сохранение результатов в файл
         run: npm run test:coverage -- --run | tee coverage-summary.txt
       # 5.2: Новый шаг: Публикация комментария с результатами в PR
       - name: Post coverage summary to PR
