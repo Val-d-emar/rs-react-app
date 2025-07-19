@@ -26,6 +26,7 @@ export default defineConfig({
         'src/main.tsx', // Usually do not test the entry point
         'src/vite-env.d.ts',
         'src/setupTests.ts',
+        'src/types/**/*',
       ],
     },
   },

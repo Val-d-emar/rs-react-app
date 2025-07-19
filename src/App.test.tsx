@@ -250,4 +250,76 @@ describe('App Component - Integration Tests', () => {
     ).toBeInTheDocument();
     consoleErrorSpy.mockRestore();
   });
+  it('should display an error message if the API call fails', async () => {
+    // Arrange: Setting up the fetch mock to ERROR (rejected Promise)
+    fetchSpy.mockRejectedValueOnce(new Error('Network Error'));
+
+    // Act
+    render(<App />);
+
+    // Assert
+    await waitFor(() => {
+      // We are looking for the error message that our component should display.
+      expect(screen.getByText(/Network Error/i)).toBeInTheDocument();
+    });
+  });
+  // And also a test for server error (not 200 OK)
+  it('should handle non-200 API responses gracefully', async () => {
+    // Arrange: Emulating a server response with an error (for example, 500)
+    fetchSpy.mockResolvedValueOnce({
+      ok: false, // <-- Key flag
+      status: 500,
+    } as Response);
+    // Act
+    render(<App />);
+    // Assert
+    await waitFor(() => {
+      // We are looking for the error message that our component should display.
+      expect(screen.getByText(/HTTP error! status/i)).toBeInTheDocument();
+      expect(screen.getByText(/500/i)).toBeInTheDocument();
+    });
+  });
+  it('should handle 404 API response', async () => {
+    // Arrange: Emulating a server response with an error (for example, 500)
+    fetchSpy.mockResolvedValueOnce({
+      ok: false, // <-- Key flag
+      status: 404,
+    } as Response);
+    fetchSpy.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ results: mockPokemonList }),
+    } as Response);
+    // Act
+    render(<App />);
+    // Assert
+    // Waiting for the asynchronous operations to complete and the UI to update.
+    await waitFor(() => {
+      // We are checking that the data from the mock is displayed.
+      expect(screen.getByText('Bulbasaur')).toBeInTheDocument();
+      expect(screen.getByText('Charizard')).toBeInTheDocument();
+    });
+
+    // We check that fetch was called with the correct URL.
+    expect(fetchSpy).toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon/');
+  });
+  it('should handle 404 API response + 500 second', async () => {
+    // Arrange: Emulating a server response with an error (for example, 500)
+    fetchSpy.mockResolvedValueOnce({
+      ok: false, // <-- Key flag
+      status: 404,
+    } as Response);
+    // Arrange: Emulating a server response with an error (for example, 500)
+    fetchSpy.mockResolvedValueOnce({
+      ok: false, // <-- Key flag
+      status: 500,
+    } as Response);
+    // Act
+    render(<App />);
+    // Assert
+    await waitFor(() => {
+      // We are looking for the error message that our component should display.
+      expect(screen.getByText(/HTTP error! status/i)).toBeInTheDocument();
+      expect(screen.getByText(/500/i)).toBeInTheDocument();
+    });
+  });
 });
