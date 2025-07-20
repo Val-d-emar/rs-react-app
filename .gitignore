@@ -24,7 +24,7 @@ dist-ssr
 *.sw?
 
 # my docs for tasks
-PR.*.MD
+PR.*.md
 screenshots.*/
 notes.*.md
 howto.*.md
