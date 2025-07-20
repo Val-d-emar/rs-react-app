@@ -7,7 +7,7 @@ import styles from './CardList.module.css';
 const CardList = ({ items }: IData) => {
   log('Card: ', items);
   return (
-    <tbody className={styles.list}>
+    <tbody className={styles.list} data-testid='card-list-body'>
       {items.map((item) => (
         <Card key={item.url} url={item.url} name={item.name} />
       ))}
