@@ -65,4 +65,19 @@ describe('Main Component', () => {
     expect(screen.getByText(/Error/i)).toBeInTheDocument();
     expect(screen.getByText(/This is a test error/i)).toBeInTheDocument();
   });
+  it('should render the error as a string if it is not an Error object', () => {
+    // Arrange: We create props, where error is a simple string.
+    const errorString = 'Something went terribly wrong';
+    const props = {
+      loading: false,
+      error: errorString, // <--- Ключевой момент
+      filteredData: [],
+    };
+
+    // Act
+    render(<Main {...props} />);
+
+    // Assert: We check that the string itself is displayed, not its property. .message
+    expect(screen.getByText(`Error: ${errorString}`)).toBeInTheDocument();
+  });
 });
