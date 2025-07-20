@@ -15,7 +15,7 @@ export interface IItem {
 // The component receives everything it needs for display through props.
 export interface IProps {
   loading: boolean;
-  error: Error | null;
+  error: Error | string | null;
   filteredData: IItem[];
 }
 export interface ISearchProps {
