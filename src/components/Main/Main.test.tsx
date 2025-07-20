@@ -56,4 +56,13 @@ describe('Main Component', () => {
     expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
     expect(screen.queryByText(/Not found/i)).not.toBeInTheDocument();
   });
+  it('should render "Error" message when the error', () => {
+    const error = new Error('This is a test error!');
+    // Act: Rendering with an empty list
+    render(<Main loading={false} error={error} filteredData={[]} />);
+
+    // Assert: Checking for the presence of the corresponding message
+    expect(screen.getByText(/Error/i)).toBeInTheDocument();
+    expect(screen.getByText(/This is a test error/i)).toBeInTheDocument();
+  });
 });

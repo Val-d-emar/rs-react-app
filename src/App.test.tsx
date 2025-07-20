@@ -59,7 +59,47 @@ describe('App Component - Integration Tests', () => {
     // We check that fetch was called with the correct URL.
     expect(fetchSpy).toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon/');
   });
+  it('should fetch and display a list of pokemon on initial render if bag data', async () => {
+    // Arrange: Setting up mock fetch for a successful response
+    const badData: IItem[] = [
+      { name: 'Charizard', url: '' },
+      { name: 'Bulbasaur', url: '' },
+    ];
+    fetchSpy.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ results: badData }),
+    } as Response);
 
+    // Act
+    render(<App />);
+
+    // Waiting for the asynchronous operations to complete and the UI to update.
+    await waitFor(() => {
+      // We are checking that the data from the mock is displayed.
+      expect(screen.getByText('Bulbasaur')).toBeInTheDocument();
+      expect(screen.getByText('Charizard')).toBeInTheDocument();
+      const naElements = screen.getAllByText(/N\/A/i);
+      expect(naElements).toHaveLength(badData.length);
+    });
+  });
+  it('should trow error if bag data', async () => {
+    // Arrange: Setting up mock fetch for a successful response
+    const badData = { name: 'Charizard', id: null };
+    fetchSpy.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ ...badData }),
+    } as Response);
+
+    // Act
+    render(<App />);
+
+    // Waiting for the asynchronous operations to complete and the UI to update.
+    await waitFor(() => {
+      // We are checking that the data from the mock is displayed.
+      expect(screen.getByText(/Error:/i)).toBeInTheDocument();
+      expect(screen.getByText(/Unexpected data format/i)).toBeInTheDocument();
+    });
+  });
   it('should perform a search when user types and clicks search button', async () => {
     const user = userEvent.setup();
 
