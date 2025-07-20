@@ -51,7 +51,38 @@ jobs:
           NO_COLOR: true # Отключаем цветной вывод для лучшей читаемости в комментариях
         # Запуск тестов с покрытием и сохранение результатов в файл
         run: npm run test:coverage -- --run | tee coverage-summary.txt
-      # 5.2: Новый шаг: Публикация комментария с результатами в PR
+      # Шаг 5.2: Удаление старого комментария с покрытием в PR
+      - name: Delete old coverage comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const botCommentIdentifier = "## 🧪 Test Coverage Report";
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const oldComment = comments.find(comment => 
+              comment.user.login === 'github-actions[bot]' && 
+              comment.body.startsWith(botCommentIdentifier)
+            );
+
+            if (oldComment) {
+              console.log(`Found old comment with id: ${oldComment.id}. Deleting...`);
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: oldComment.id,
+              });
+              console.log('Old comment deleted.');
+            } else {
+              console.log('No old coverage comment found.');
+            }
+      # Шаг 5.3: Публикация комментария с результатами в PR
       - name: Post coverage summary to PR
         # Запускать только для событий pull_request
         if: github.event_name == 'pull_request'
