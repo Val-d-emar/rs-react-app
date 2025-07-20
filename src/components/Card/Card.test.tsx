@@ -32,4 +32,24 @@ describe('Card Component', () => {
     expect(nameElement).toBeInTheDocument();
     expect(descriptionElement).toBeInTheDocument();
   });
+  it('should render "N/A" for the name if it is not provided', () => {
+    // Arrange: Creating mock data with a "false" value for name
+    const mockItemWithoutName: IItem = {
+      name: '', // An empty string is a falsy value
+      url: 'some-url/10/',
+    };
+
+    // Act
+    render(
+      <table>
+        <tbody>
+          <Card {...mockItemWithoutName} />
+        </tbody>
+      </table>
+    );
+
+    // Assert: Checking that the text "N/A" has appeared on the screen.
+    const na = screen.getByText(/N\/A/i);
+    expect(na).toBeInTheDocument();
+  });
 });
