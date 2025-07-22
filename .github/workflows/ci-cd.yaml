@@ -182,7 +182,8 @@ jobs:
         run: npm ci
 
       - name: Build application
-        run: npm run build # Эта команда создаст папку 'dist'
+        # Эта команда создаст папку 'dist'
+        run: npm run build -- --base=/${{ github.event.repository.name }}/
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
