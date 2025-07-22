@@ -150,8 +150,7 @@ jobs:
     name: Deploy to GitHub Pages
     # Запускать только после успешного завершения тестов
     needs: build-and-test
-    # Запускать только при push или pull_request в ветку 'main'
-    if: github.ref == 'refs/heads/main' && github.event_name == 'pull_request'
+    
     runs-on: ubuntu-latest
 
     # Задаем права для GITHUB_TOKEN, чтобы разрешить публикацию
