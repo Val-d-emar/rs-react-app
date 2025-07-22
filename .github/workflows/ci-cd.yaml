@@ -197,3 +197,15 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Смок-тестирование: проверяем, что страница доступна и содержит нужный текст
+      - name: Verify deployment
+        run: |
+          echo "Verifying deployment at: ${{ steps.deployment.outputs.page_url }}"
+          # Даем GitHub Pages немного времени на "разогрев"
+          sleep 10
+          # Используем curl для скачивания и grep для поиска текста.
+          # Флаг --fail заставит curl упасть, если статус не 200 OK.
+          # Пайп | передает вывод curl на вход grep.
+          # Флаг -q (quiet) для grep означает "не выводи найденную строку, просто завершись с нужным кодом".
+          curl -s --fail "${{ steps.deployment.outputs.page_url }}" | grep -q "Top controls"
