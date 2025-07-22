@@ -111,6 +111,7 @@ jobs:
           retention-days: 7 # Хранить артефакт 7 дней
       # Шаг 6: Сборка Docker-образа для теста
       - name: Build Docker image for testing
+        if: github.ref == 'refs/heads/dev' && github.event_name != 'pull_request'
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -119,6 +120,7 @@ jobs:
 
       # Шаг 7: Тестирование запущенного контейнера
       - name: Test running container
+        if: github.ref == 'refs/heads/dev' && github.event_name != 'pull_request'
         run: |
           docker run -d --name test-container -p 8080:80 test-image:latest
           echo "Waiting for container to start..."
@@ -142,3 +144,47 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/rs-react-apps:latest # Публикуем образ в Docker Hub
+
+  # --- НОВЫЙ JOB ДЛЯ ПУБЛИКАЦИИ НА GITHUB PAGES ---
+  deploy:
+    name: Deploy to GitHub Pages
+    # Запускать только после успешного завершения тестов
+    needs: build-and-test
+    # Запускать только при push или pull_request в ветку 'main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    # Задаем права для GITHUB_TOKEN, чтобы разрешить публикацию
+    permissions:
+      contents: read
+      pages: write # Право на запись на GitHub Pages
+      id-token: write # Право на использование OIDC токена
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build # Эта команда создаст папку 'dist'
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload production build as artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Загружаем содержимое папки, созданной на шаге 'build'
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
