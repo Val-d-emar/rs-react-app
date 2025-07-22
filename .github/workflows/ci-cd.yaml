@@ -7,6 +7,8 @@ on:
     branches: ['main', 'dev']
   pull_request:
     branches: ['main', 'dev']
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 permissions:
   contents: read # Право на чтение содержимого репозитория (для checkout)
@@ -158,7 +160,14 @@ jobs:
       contents: read
       pages: write # Право на запись на GitHub Pages
       id-token: write # Право на использование OIDC токена
-
+    # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+    # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+    concurrency:
+      group: 'pages'
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
