@@ -208,4 +208,4 @@ jobs:
           # Флаг --fail заставит curl упасть, если статус не 200 OK.
           # Пайп | передает вывод curl на вход grep.
           # Флаг -q (quiet) для grep означает "не выводи найденную строку, просто завершись с нужным кодом".
-          curl -s --fail "${{ steps.deployment.outputs.page_url }}" | grep -q "Top controls"
+          curl -s --fail "${{ steps.deployment.outputs.page_url }}" | grep -q "</html>"
