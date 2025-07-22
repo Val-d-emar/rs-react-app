@@ -150,7 +150,7 @@ jobs:
     name: Deploy to GitHub Pages
     # Запускать только после успешного завершения тестов
     needs: build-and-test
-    
+    # Запускать на последней версии Ubuntu
     runs-on: ubuntu-latest
 
     # Задаем права для GITHUB_TOKEN, чтобы разрешить публикацию
